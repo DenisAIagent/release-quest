@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phaser Debug - Release Quest</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        #debug-info {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.8);
+            padding: 10px;
+            border: 1px solid #00ff00;
+            max-width: 300px;
+            z-index: 1000;
+        }
+        #game-container {
+            border: 2px solid #ff0000;
+            display: inline-block;
+            margin: 20px;
+        }
+        .debug-log {
+            background: #2a2a2a;
+            padding: 10px;
+            margin: 10px 0;
+            border-left: 3px solid #00ff00;
+        }
+        .error { border-left-color: #ff0000; }
+        .warning { border-left-color: #ffff00; }
+        .success { border-left-color: #00ff00; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Phaser.js Debug - Release Quest</h1>
+
+    <div id="debug-info">
+        <h3>Debug Info</h3>
+        <div id="canvas-info">Canvas: Not loaded</div>
+        <div id="scene-info">Scene: Not loaded</div>
+        <div id="render-info">Renderer: Not loaded</div>
+    </div>
+
+    <div id="game-container"></div>
+
+    <div id="debug-logs">
+        <h2>Debug Logs</h2>
+    </div>
+
+    <script type="module">
+        // Debug utilities
+        function log(message, type = 'info') {
+            const logs = document.getElementById('debug-logs');
+            const logDiv = document.createElement('div');
+            logDiv.className = `debug-log ${type}`;
+            logDiv.innerHTML = `<strong>[${new Date().toLocaleTimeString()}]</strong> ${message}`;
+            logs.appendChild(logDiv);
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+
+        function updateDebugInfo() {
+            const canvasInfo = document.getElementById('canvas-info');
+            const sceneInfo = document.getElementById('scene-info');
+            const renderInfo = document.getElementById('render-info');
+
+            if (window.game) {
+                const canvas = window.game.canvas;
+                const renderer = window.game.renderer;
+                const scene = window.game.scene.getScenes(true)[0];
+
+                canvasInfo.innerHTML = `Canvas: ${canvas.width}x${canvas.height} (visible: ${canvas.style.display !== 'none'})`;
+                renderInfo.innerHTML = `Renderer: ${renderer.type === 0 ? 'Canvas' : 'WebGL'} (${renderer.width}x${renderer.height})`;
+                sceneInfo.innerHTML = `Scene: ${scene ? scene.scene.key : 'None'} (active: ${scene ? scene.scene.isActive() : false})`;
+            }
+        }
+
+        // Test d'initialisation Phaser minimal
+        async function testPhaser() {
+            log('🚀 Starting Phaser diagnostic...', 'info');
+
+            try {
+                // Import Phaser
+                const { default: Phaser } = await import('/node_modules/phaser/dist/phaser.esm.js');
+                log('✅ Phaser imported successfully', 'success');
+
+                // Test Scene simple
+                class TestScene extends Phaser.Scene {
+                    constructor() {
+                        super({ key: 'TestScene' });
+                    }
+
+                    preload() {
+                        log('🔄 TestScene: preload started', 'info');
+                    }
+
+                    create() {
+                        log('🎨 TestScene: create started', 'success');
+
+                        // Fond coloré visible
+                        this.cameras.main.setBackgroundColor('#ff0000');
+
+                        // Texte blanc visible
+                        const text = this.add.text(400, 240, 'PHASER TEST OK', {
+                            fontSize: '32px',
+                            color: '#ffffff',
+                            stroke: '#000000',
+                            strokeThickness: 4
+                        });
+                        text.setOrigin(0.5, 0.5);
+
+                        // Rectangle vert
+                        const rect = this.add.graphics();
+                        rect.fillStyle(0x00ff00);
+                        rect.fillRect(300, 300, 200, 100);
+
+                        log('✅ TestScene: Graphics created successfully', 'success');
+
+                        // Test de transition après 3 secondes
+                        this.time.delayedCall(3000, () => {
+                            log('🔄 Testing scene transition...', 'info');
+                            this.scene.start('TestScene2');
+                        });
+                    }
+                }
+
+                class TestScene2 extends Phaser.Scene {
+                    constructor() {
+                        super({ key: 'TestScene2' });
+                    }
+
+                    create() {
+                        log('🎨 TestScene2: create started', 'success');
+                        this.cameras.main.setBackgroundColor('#0000ff');
+
+                        const text = this.add.text(400, 240, 'SCENE 2 LOADED', {
+                            fontSize: '32px',
+                            color: '#ffff00'
+                        });
+                        text.setOrigin(0.5, 0.5);
+                    }
+                }
+
+                // Configuration Phaser minimale
+                const config = {
+                    type: Phaser.AUTO,
+                    width: 800,
+                    height: 480,
+                    parent: 'game-container',
+                    backgroundColor: '#ff00ff', // Magenta pour détecter si le canvas s'affiche
+                    scene: [TestScene, TestScene2],
+                    scale: {
+                        mode: Phaser.Scale.FIT,
+                        autoCenter: Phaser.Scale.CENTER_BOTH
+                    }
+                };
+
+                log('🔧 Creating Phaser game instance...', 'info');
+                window.game = new Phaser.Game(config);
+
+                // Monitorer les événements Phaser
+                window.game.events.on('ready', () => {
+                    log('✅ Phaser game ready!', 'success');
+                    updateDebugInfo();
+                });
+
+                window.game.events.on('boot', () => {
+                    log('✅ Phaser game booted!', 'success');
+                });
+
+                // Update debug info périodiquement
+                setInterval(updateDebugInfo, 1000);
+
+            } catch (error) {
+                log(`❌ Error: ${error.message}`, 'error');
+                console.error('Phaser test error:', error);
+            }
+        }
+
+        // Test du DOM et CSS
+        function testDOM() {
+            log('🔍 Testing DOM and CSS...', 'info');
+
+            const container = document.getElementById('game-container');
+            const computedStyle = window.getComputedStyle(container);
+
+            log(`Container display: ${computedStyle.display}`, 'info');
+            log(`Container visibility: ${computedStyle.visibility}`, 'info');
+            log(`Container position: ${computedStyle.position}`, 'info');
+
+            // Test si on peut créer un canvas manuellement
+            const testCanvas = document.createElement('canvas');
+            testCanvas.width = 100;
+            testCanvas.height = 100;
+            testCanvas.style.border = '2px solid yellow';
+            const ctx = testCanvas.getContext('2d');
+            ctx.fillStyle = 'red';
+            ctx.fillRect(0, 0, 100, 100);
+
+            container.appendChild(testCanvas);
+            log('✅ Manual canvas created and appended', 'success');
+        }
+
+        // Démarrer les tests
+        document.addEventListener('DOMContentLoaded', () => {
+            testDOM();
+            testPhaser();
+        });
+
+        // Intercepter les erreurs
+        window.addEventListener('error', (e) => {
+            log(`❌ JavaScript Error: ${e.message} at ${e.filename}:${e.lineno}`, 'error');
+        });
+
+        window.addEventListener('unhandledrejection', (e) => {
+            log(`❌ Unhandled Promise Rejection: ${e.reason}`, 'error');
+        });
+    </script>
+</body>
+</html>
