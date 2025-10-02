@@ -133,7 +133,7 @@ export default class BootScene extends Phaser.Scene {
       // Tenter de jouer immédiatement
       const playPromise = this.welcomeMusic.play();
 
-      if (playPromise !== undefined) {
+      if (playPromise instanceof Promise) {
         playPromise.then(() => {
           console.log('🎵 Musique d\'accueil démarrée automatiquement');
         }).catch(() => {
