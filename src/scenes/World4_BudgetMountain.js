@@ -1,3 +1,4 @@
+import * as Phaser from 'phaser';
 import Player from '../entities/Player.js';
 import HUD from '../ui/HUD.js';
 import ScoreSystem from '../systems/ScoreSystem.js';

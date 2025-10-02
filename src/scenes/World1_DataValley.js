@@ -1,3 +1,4 @@
+import * as Phaser from 'phaser';
 import Player from '../entities/Player.js';
 import Enemy from '../entities/Enemy.js';
 import HUD from '../ui/HUD.js';

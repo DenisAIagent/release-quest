@@ -1,16 +1,20 @@
 import * as Phaser from 'phaser';
 import { gameConfig } from './config/gameConfig.js';
 
-// Remove loading indicator
-const loadingElement = document.querySelector('.loading');
-if (loadingElement) {
-  loadingElement.remove();
-}
+// Remove loading indicator after a short delay to ensure DOM is ready
+setTimeout(() => {
+  const loadingElement = document.querySelector('.loading');
+  if (loadingElement) {
+    loadingElement.remove();
+    console.log('✅ Loading indicator removed');
+  }
+}, 100);
 
 // Initialize the game with enhanced error handling
 let game;
 try {
   console.log('🚀 Initializing Phaser Game...');
+  console.log('🔧 Game config:', gameConfig);
   game = new Phaser.Game(gameConfig);
   console.log('✅ Phaser Game initialized successfully');
 
