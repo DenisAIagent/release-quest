@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Simple</title>
+    <style>
+        body { margin: 0; padding: 20px; background: yellow; }
+        #game { border: 5px solid red; }
+    </style>
+</head>
+<body>
+    <h1>Test Simple - Should see GREEN background</h1>
+    <div id="game"></div>
+
+    <script type="module">
+        import Phaser from '/node_modules/phaser/dist/phaser.esm.js';
+
+        class SimpleScene extends Phaser.Scene {
+            create() {
+                // Fond vert très visible
+                this.cameras.main.setBackgroundColor('#00FF00');
+
+                // Texte noir sur fond vert
+                this.add.text(400, 240, 'SUCCESS - GREEN BACKGROUND!', {
+                    fontSize: '32px',
+                    color: '#000000',
+                    fontFamily: 'Arial'
+                }).setOrigin(0.5);
+
+                console.log('✅ SimpleScene: Fond vert appliqué');
+            }
+        }
+
+        new Phaser.Game({
+            type: Phaser.AUTO,
+            width: 800,
+            height: 480,
+            parent: 'game',
+            scene: SimpleScene,
+            backgroundColor: '#00FF00'
+        });
+    </script>
+</body>
+</html>
