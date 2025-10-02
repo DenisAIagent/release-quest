@@ -862,13 +862,36 @@ export default class MenuScene extends Phaser.Scene {
     if (this.input && this.input.keyboard) {
       try {
         if (this.cursors) {
-          this.input.keyboard.removeKey(this.cursors);
+          Object.values(this.cursors).forEach(key => {
+            if (key) {
+              if (typeof key.destroy === 'function') {
+                key.destroy();
+              } else {
+                this.input.keyboard.removeKey(key);
+              }
+            }
+          });
+          this.cursors = null;
         }
         if (this.spaceKey) {
           this.input.keyboard.removeKey(this.spaceKey);
+          this.spaceKey = null;
         }
         if (this.enterKey) {
           this.input.keyboard.removeKey(this.enterKey);
+          this.enterKey = null;
+        }
+        if (this.formKeys) {
+          Object.values(this.formKeys).forEach(key => {
+            if (key) {
+              if (typeof key.destroy === 'function') {
+                key.destroy();
+              } else {
+                this.input.keyboard.removeKey(key);
+              }
+            }
+          });
+          this.formKeys = null;
         }
       } catch (e) {
         // Ignorer les erreurs de nettoyage
