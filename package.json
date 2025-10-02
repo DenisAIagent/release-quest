@@ -13,6 +13,6 @@
   },
   "dependencies": {
     "howler": "^2.2.4",
-    "phaser": "^3.70.0"
+    "phaser": "^3.90.0"
   }
 }
