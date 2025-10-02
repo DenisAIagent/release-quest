@@ -26,5 +26,9 @@ export default defineConfig({
     alias: {
       phaser: 'phaser/dist/phaser.esm.js'
     }
+  },
+  define: {
+    CANVAS_RENDERER: JSON.stringify(true),
+    WEBGL_RENDERER: JSON.stringify(true)
   }
 });
