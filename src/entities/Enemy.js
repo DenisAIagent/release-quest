@@ -1,3 +1,4 @@
+import * as Phaser from 'phaser';
 import { COLORS, COIN_VALUES } from '../config/constants.js';
 
 export default class Enemy extends Phaser.GameObjects.Container {

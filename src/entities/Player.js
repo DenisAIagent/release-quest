@@ -1,3 +1,4 @@
+import * as Phaser from 'phaser';
 import { PLAYER_CONFIG, COLORS, GENRE_STEREOTYPES } from '../config/constants.js';
 
 export default class Player extends Phaser.GameObjects.Container {

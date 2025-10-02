@@ -1,4 +1,5 @@
 // src/scenes/MenuScene.js - VERSION CORRIGÉE
+import * as Phaser from 'phaser';
 
 export default class MenuScene extends Phaser.Scene {
   constructor() {
