@@ -16,10 +16,14 @@ export default class HUD {
       strokeThickness: 2
     };
 
+    // Utiliser les dimensions de la caméra au lieu de game.config
+    const width = this.scene.cameras.main.width;
+    const height = this.scene.cameras.main.height;
+
     this.elements.hpBar = this.createHealthBar(padding, padding);
 
     this.elements.budgetText = this.scene.add.text(
-      this.scene.game.config.width / 2,
+      width / 2,
       padding,
       'BUDGET: €0',
       { ...textStyle, fontSize: '18px' }
@@ -29,7 +33,7 @@ export default class HUD {
     this.elements.budgetText.setDepth(1000);
 
     this.elements.scoreText = this.scene.add.text(
-      this.scene.game.config.width - padding,
+      width - padding,
       padding,
       'SCORE: 50',
       { ...textStyle, fontSize: '20px', color: '#FFD700' }
@@ -39,7 +43,7 @@ export default class HUD {
     this.elements.scoreText.setDepth(1000);
 
     this.elements.competitionText = this.scene.add.text(
-      this.scene.game.config.width - padding,
+      width - padding,
       padding + 25,
       'COMPETITION: MODERATE',
       { ...textStyle, fontSize: '14px' }
@@ -50,7 +54,7 @@ export default class HUD {
 
     this.elements.weaponText = this.scene.add.text(
       padding,
-      this.scene.game.config.height - padding,
+      height - padding,
       'WEAPON: API Guitar',
       { ...textStyle, fontSize: '14px' }
     );
@@ -59,8 +63,8 @@ export default class HUD {
     this.elements.weaponText.setDepth(1000);
 
     this.elements.timelineText = this.scene.add.text(
-      this.scene.game.config.width - padding,
-      this.scene.game.config.height - padding,
+      width - padding,
+      height - padding,
       'TIMELINE: J-45',
       { ...textStyle, fontSize: '14px' }
     );

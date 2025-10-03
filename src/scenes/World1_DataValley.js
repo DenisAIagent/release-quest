@@ -354,10 +354,13 @@ export default class World1_DataValley extends Phaser.Scene {
       });
     });
 
-    this.input.keyboard.on('keydown-ESC', () => {
-      this.scene.pause();
-      this.scene.launch('PauseScene');
-    });
+    // Gestion de la touche ESC pour la pause
+    if (this.input && this.input.keyboard) {
+      this.input.keyboard.on('keydown-ESC', () => {
+        this.scene.pause();
+        this.scene.launch('PauseScene');
+      });
+    }
   }
 
   enterTemple(temple) {
