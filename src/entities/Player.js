@@ -26,19 +26,38 @@ export default class Player extends Phaser.GameObjects.Container {
     this.body.setSize(28, 28);
     this.body.setCollideWorldBounds(true);
 
-    this.keys = scene.input.keyboard.addKeys({
-      up: Phaser.Input.Keyboard.KeyCodes.W,
-      down: Phaser.Input.Keyboard.KeyCodes.S,
-      left: Phaser.Input.Keyboard.KeyCodes.A,
-      right: Phaser.Input.Keyboard.KeyCodes.D,
-      altUp: Phaser.Input.Keyboard.KeyCodes.UP,
-      altDown: Phaser.Input.Keyboard.KeyCodes.DOWN,
-      altLeft: Phaser.Input.Keyboard.KeyCodes.LEFT,
-      altRight: Phaser.Input.Keyboard.KeyCodes.RIGHT,
-      space: Phaser.Input.Keyboard.KeyCodes.SPACE,
-      interact: Phaser.Input.Keyboard.KeyCodes.E,
-      switchWeapon: Phaser.Input.Keyboard.KeyCodes.Q
-    });
+    // Vérifier que scene.input existe avant de créer les keys
+    if (scene.input && scene.input.keyboard) {
+      this.keys = scene.input.keyboard.addKeys({
+        up: Phaser.Input.Keyboard.KeyCodes.W,
+        down: Phaser.Input.Keyboard.KeyCodes.S,
+        left: Phaser.Input.Keyboard.KeyCodes.A,
+        right: Phaser.Input.Keyboard.KeyCodes.D,
+        altUp: Phaser.Input.Keyboard.KeyCodes.UP,
+        altDown: Phaser.Input.Keyboard.KeyCodes.DOWN,
+        altLeft: Phaser.Input.Keyboard.KeyCodes.LEFT,
+        altRight: Phaser.Input.Keyboard.KeyCodes.RIGHT,
+        space: Phaser.Input.Keyboard.KeyCodes.SPACE,
+        interact: Phaser.Input.Keyboard.KeyCodes.E,
+        switchWeapon: Phaser.Input.Keyboard.KeyCodes.Q
+      });
+    } else {
+      console.error('❌ scene.input is undefined in Player constructor!');
+      // Créer un objet vide pour éviter les erreurs
+      this.keys = {
+        up: { isDown: false },
+        down: { isDown: false },
+        left: { isDown: false },
+        right: { isDown: false },
+        altUp: { isDown: false },
+        altDown: { isDown: false },
+        altLeft: { isDown: false },
+        altRight: { isDown: false },
+        space: { isDown: false },
+        interact: { isDown: false },
+        switchWeapon: { isDown: false }
+      };
+    }
 
     this.lastAttackTime = 0;
     this.attackCooldown = PLAYER_CONFIG.attackCooldown;

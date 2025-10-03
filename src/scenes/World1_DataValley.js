@@ -12,49 +12,67 @@ export default class World1_DataValley extends Phaser.Scene {
   }
 
   create() {
-    console.log('🌍 World1_DataValley - Démarrage');
+    try {
+      console.log('🌍 World1_DataValley - Démarrage');
 
-    this.cameras.main.setBackgroundColor('#0a0a1a'); // Fond bleu foncé pour meilleure visibilité
+      this.cameras.main.setBackgroundColor('#0a0a1a'); // Fond bleu foncé pour meilleure visibilité
 
-    console.log('⚙️ Initialisation des systèmes...');
-    this.scoreSystem = new ScoreSystem();
-    this.budgetSystem = new BudgetSystem();
+      console.log('⚙️ Initialisation des systèmes...');
+      this.scoreSystem = new ScoreSystem();
+      this.budgetSystem = new BudgetSystem();
 
-    console.log('🏗️ Création du monde...');
-    this.createWorld();
+      console.log('🏗️ Création du monde...');
+      this.createWorld();
 
-    console.log('👤 Création du joueur...');
-    this.createPlayer();
+      console.log('👤 Création du joueur...');
+      this.createPlayer();
 
-    console.log('⚔️ Initialisation des armes...');
-    this.weaponSystem = new WeaponSystem(this);
+      console.log('⚔️ Initialisation des armes...');
+      this.weaponSystem = new WeaponSystem(this);
 
-    console.log('👹 Création des ennemis...');
-    this.createEnemies();
+      console.log('👹 Création des ennemis...');
+      this.createEnemies();
 
-    console.log('💎 Création des collectibles...');
-    this.createCollectibles();
+      console.log('💎 Création des collectibles...');
+      this.createCollectibles();
 
-    console.log('🏛️ Création des temples...');
-    this.createTemples();
+      console.log('🏛️ Création des temples...');
+      this.createTemples();
 
-    console.log('💥 Configuration des collisions...');
-    this.setupCollisions();
+      console.log('💥 Configuration des collisions...');
+      this.setupCollisions();
 
-    console.log('🎮 Création du HUD...');
-    this.createHUD();
+      console.log('🎮 Création du HUD...');
+      this.createHUD();
 
-    console.log('⚡ Configuration des événements...');
-    this.setupEvents();
+      console.log('⚡ Configuration des événements...');
+      this.setupEvents();
 
-    console.log('📹 Configuration de la caméra...');
-    this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
-    this.cameras.main.setZoom(1.5);
+      console.log('📹 Configuration de la caméra...');
+      this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
+      this.cameras.main.setZoom(1.5);
 
-    console.log('🎬 Affichage de l\'intro...');
-    this.showWorldIntro();
+      console.log('🎬 Affichage de l\'intro...');
+      this.showWorldIntro();
 
-    console.log('✅ World1_DataValley - Prêt à jouer!');
+      console.log('✅ World1_DataValley - Prêt à jouer!');
+    } catch (error) {
+      console.error('💥 ERREUR CRITIQUE dans World1_DataValley.create():', error);
+      console.error('Stack trace:', error.stack);
+      
+      // Afficher un message d'erreur à l'utilisateur
+      const errorText = this.add.text(400, 240, 'ERROR: Failed to load World1\n\nCheck console for details\n\n' + error.message, {
+        fontSize: '20px',
+        fontFamily: 'Courier New',
+        color: '#FF0000',
+        align: 'center',
+        backgroundColor: '#000000',
+        padding: { x: 20, y: 20 }
+      });
+      errorText.setOrigin(0.5, 0.5);
+      errorText.setScrollFactor(0);
+      errorText.setDepth(9999);
+    }
   }
 
   createWorld() {
