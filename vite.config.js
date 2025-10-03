@@ -6,6 +6,7 @@ export default defineConfig({
     target: 'es2015',
     outDir: 'dist',
     assetsDir: 'assets',
+    emptyOutDir: true, // Nettoyer le dossier dist avant chaque build
     rollupOptions: {
       input: {
         main: './index.html'
@@ -16,7 +17,9 @@ export default defineConfig({
         }
       }
     },
-    chunkSizeWarningLimit: 2000
+    chunkSizeWarningLimit: 2000,
+    minify: 'terser', // Minification pour la production
+    sourcemap: false // Pas de sourcemaps en production
   },
   server: {
     port: 5173,

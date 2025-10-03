@@ -14,7 +14,7 @@ export default class World1_DataValley extends Phaser.Scene {
   create() {
     console.log('🌍 World1_DataValley - Démarrage');
 
-    this.cameras.main.setBackgroundColor('#000000'); // Fond noir selon le design
+    this.cameras.main.setBackgroundColor('#0a0a1a'); // Fond bleu foncé pour meilleure visibilité
 
     console.log('⚙️ Initialisation des systèmes...');
     this.scoreSystem = new ScoreSystem();

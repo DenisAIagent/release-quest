@@ -15,7 +15,7 @@ export const gameConfig = {
   parent: 'game-container',
   width: GAME_WIDTH,
   height: GAME_HEIGHT,
-  backgroundColor: '#000000', // Fond noir selon le design
+  backgroundColor: '#0a0a1a', // Fond bleu foncé pour meilleure visibilité
   pixelArt: true,
   physics: {
     default: 'arcade',

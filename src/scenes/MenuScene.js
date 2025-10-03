@@ -11,8 +11,8 @@ export default class MenuScene extends Phaser.Scene {
 
     const { width, height } = this.cameras.main;
 
-    // Fond noir visible
-    this.cameras.main.setBackgroundColor('#000000');
+    // Fond bleu foncé pour meilleure visibilité
+    this.cameras.main.setBackgroundColor('#0a0a1a');
     console.log('✅ Background set');
 
     this.createBackground();
@@ -109,13 +109,15 @@ export default class MenuScene extends Phaser.Scene {
   createBackground() {
     const graphics = this.add.graphics();
 
-    graphics.fillStyle(0x000000, 1);
+    // Dégradé bleu foncé au lieu de noir pur
+    graphics.fillGradientStyle(0x0a0a1a, 0x1a1a2e, 0x16213e, 0x2a2a4e, 1);
     graphics.fillRect(0, 0, 800, 480);
 
-    for (let i = 0; i < 100; i++) {
+    // Étoiles et particules colorées
+    for (let i = 0; i < 150; i++) {
       const x = Math.random() * 800;
       const y = Math.random() * 480;
-      const size = Math.random() * 2;
+      const size = Math.random() * 3;
       const colors = [0xFF0000, 0xFFFFFF, 0xFFD700];
       const color = colors[Math.floor(Math.random() * colors.length)];
       graphics.fillStyle(color, Math.random() * 0.8 + 0.2);
@@ -125,7 +127,7 @@ export default class MenuScene extends Phaser.Scene {
     graphics.generateTexture('menu_bg', 800, 480);
     graphics.destroy();
 
-    this.add.image(400, 240, 'menu_bg');
+    this.add.image(400, 240, 'menu_bg').setDepth(-1);
   }
 
   createInstructions() {

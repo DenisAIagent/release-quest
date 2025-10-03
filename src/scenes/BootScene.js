@@ -11,11 +11,9 @@ export default class BootScene extends Phaser.Scene {
 
     console.log('🔄 BootScene preload started');
 
-    // Charger l'image de titre (optionnel)
-    this.load.image('titleImage', '/assets/images/accueil.png');
-
-    // Charger la musique d'accueil (optionnel)
-    this.load.audio('welcomeMusic', '/assets/musiques/accueil.mp3');
+    // NE PAS charger les assets manquants - utiliser uniquement les placeholders
+    // this.load.image('titleImage', '/assets/images/accueil.png');
+    // this.load.audio('welcomeMusic', '/assets/musiques/accueil.mp3');
 
     // Gestion des erreurs de chargement
     this.load.on('loaderror', (file) => {
@@ -129,8 +127,8 @@ export default class BootScene extends Phaser.Scene {
   create() {
     console.log('🎮 BootScene created');
 
-    // Fond noir selon le design
-    this.cameras.main.setBackgroundColor('#000000');
+    // Fond bleu foncé pour meilleure visibilité (au lieu de noir pur)
+    this.cameras.main.setBackgroundColor('#0a0a1a');
 
     // Texte principal - blanc avec contour rouge
     const title = this.add.text(400, 200, 'RELEASE QUEST', {
@@ -171,32 +169,11 @@ export default class BootScene extends Phaser.Scene {
 
     console.log('🎮 BootScene: Design noir/blanc/rouge appliqué');
 
-    // Démarrer la musique d'accueil (avec gestion des restrictions navigateur)
-    if (this.cache.audio.exists('welcomeMusic')) {
-      this.welcomeMusic = this.sound.add('welcomeMusic', {
-        volume: 0.5,
-        loop: true
-      });
+    // Musique désactivée (assets non disponibles)
+    // La musique sera ajoutée plus tard avec les vrais assets
 
-      // Tenter de jouer immédiatement
-      const playPromise = this.welcomeMusic.play();
-
-      if (playPromise instanceof Promise) {
-        playPromise.then(() => {
-          console.log('🎵 Musique d\'accueil démarrée automatiquement');
-        }).catch(() => {
-          console.log('🎵 Musique d\'accueil en attente d\'interaction utilisateur');
-          this.musicNeedsUserInteraction = true;
-        });
-      } else {
-        console.log('🎵 Musique d\'accueil démarrée (ancien navigateur)');
-      }
-    } else {
-      console.log('⚠️ Fichier audio welcomeMusic non trouvé');
-    }
-
-    // Si l'image de titre existe, l'afficher
-    if (this.textures.exists('titleImage')) {
+    // Affichage par défaut (pas d'image de titre)
+    if (false) { // Désactivé car titleImage n'existe pas
       const titleImage = this.add.image(
         this.cameras.main.width / 2,
         this.cameras.main.height / 2,
@@ -306,23 +283,15 @@ export default class BootScene extends Phaser.Scene {
   }
 
   handleUserInteraction() {
-    // Si la musique était en attente d'interaction, la démarrer maintenant
-    if (this.musicNeedsUserInteraction && this.welcomeMusic && !this.welcomeMusic.isPlaying) {
-      this.welcomeMusic.play();
-      console.log('🎵 Musique d\'accueil démarrée suite à interaction utilisateur');
-    }
-
+    // Pas de musique à gérer
     this.stopMusicAndTransition();
   }
 
   stopMusicAndTransition() {
-    console.log('🔄 Simple transition to MenuScene');
+    console.log('🔄 Transition vers MenuScene');
 
-    // Arrêter la musique d'accueil si elle joue
-    if (this.welcomeMusic && this.welcomeMusic.isPlaying) {
-      this.welcomeMusic.stop();
-    }
-
+    // Pas de musique à arrêter (assets non disponibles)
+    
     // Transition directe sans fade
     this.scene.start('MenuScene');
   }
